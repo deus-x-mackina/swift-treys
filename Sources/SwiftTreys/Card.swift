@@ -43,10 +43,10 @@ public struct Card {
 
     // For pretty printing
     static let PRETTY_SUITS = [
-        1: "\u{9824}",
-        2: "\u{9829}",
-        4: "\u{9830}",
-        8: "\u{9827}",
+        1: "\u{2660}",
+        2: "\u{2665}",
+        4: "\u{2666}",
+        8: "\u{2663}",
     ]
 
     // Hearts and diamonds
@@ -196,13 +196,13 @@ public struct Card {
     }
 
     static func prettyCards(_ cards: [Card]) -> String {
-        var output = " "
+        var output = ""
         for i in 0..<cards.count {
             let c = cards[i]
             if i != cards.count - 1 {
-                output += intToPrettyStr(c.binaryInteger) + ","
+                output += intToPrettyStr(c.binaryInteger) + ", "
             } else {
-                output += intToPrettyStr(c.binaryInteger) + " "
+                output += intToPrettyStr(c.binaryInteger)
             }
         }
         return output
