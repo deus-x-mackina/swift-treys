@@ -140,7 +140,7 @@ public struct Card {
     static func primeProductFromHand<T: RangeReplaceableCollection>(_ cards: T) -> Int
         where T.Element == Card {
         cards.reduce(1) {
-            $0 * ($1.binaryInteger & 0xFF)
+            $0 &* ($1.binaryInteger & 0xFF)
         }
     }
 
@@ -149,7 +149,7 @@ public struct Card {
         INT_RANKS.forEach {
             // if the ith bit is set
             if rankbits & (1 << $0) != 0 {
-                product *= PRIMES[$0]
+                product &*= PRIMES[$0]
             }
         }
         return product

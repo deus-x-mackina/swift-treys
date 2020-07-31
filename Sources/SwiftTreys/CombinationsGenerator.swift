@@ -24,16 +24,16 @@ struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
         var index = 0
         var broken = false
         for i in (0..<r).reversed() {
-            if indices[i] != i + n - r {
+            if indices[i] != i &+ n &- r {
                 broken = true
                 index = i
                 break
             }
         }
         if !broken { return nil }
-        indices[index] += 1
-        for i in (index + 1)..<r {
-            indices[i] = indices[i - 1] + 1
+        indices[index] &+= 1
+        for i in (index &+ 1)..<r {
+            indices[i] = indices[i &- 1] &+ 1
         }
         let ret = indices.map { pool[$0] }
         return ret

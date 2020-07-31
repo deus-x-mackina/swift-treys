@@ -14,8 +14,8 @@ struct BitSequenceGenerator: IteratorProtocol {
 
     init(_ bits: Int) {
         self.bits = bits
-        t = Int((bits | (bits - 1))) + 1
-        nextBits = t | ((Int(((t & -t) / (bits & -bits))) >> 1) - 1)
+        t = Int((bits | (bits &- 1))) &+ 1
+        nextBits = t | ((Int(((t & -t) / (bits & -bits))) >> 1) &- 1)
     }
 
     mutating func next() -> Int? {
@@ -23,8 +23,8 @@ struct BitSequenceGenerator: IteratorProtocol {
             calledOnce = true
             return nextBits
         }
-        t = (nextBits | (nextBits - 1)) + 1
-        nextBits = t | ((((t & -t) /! (nextBits & -nextBits)) >> 1) - 1)
+        t = (nextBits | (nextBits - 1)) &+ 1
+        nextBits = t | ((((t & -t) /! (nextBits & -nextBits)) >> 1) &- 1)
         return nextBits
     }
 }

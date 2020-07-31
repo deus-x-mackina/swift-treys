@@ -70,7 +70,7 @@ struct LookupTable {
 
         // 1277 = number of high cards
         // 1277 + straightFlushes.count is number of hands with all cards unique rank
-        for _ in 0..<(1277 + straightFlushes.count - 1) {
+        for _ in 0..<(1277 &+ straightFlushes.count &- 1) {
             // pull next flush pattern from our generator
             let f = gen.next()!
 
@@ -97,16 +97,16 @@ struct LookupTable {
         for sf in straightFlushes {
             let primeProduct = Card.primeProductFromRankbits(sf)
             flushLookup[primeProduct] = rank
-            rank += 1
+            rank &+= 1
         }
 
         // we start the counting for flushes on max full house, which
         // is the worst rank that a full house can have (2,2,2,3,3)
-        rank = Self.MAX_FULL_HOUSE + 1
+        rank = Self.MAX_FULL_HOUSE &+ 1
         for f in flushes {
             let primeProduct = Card.primeProductFromRankbits(f)
             flushLookup[primeProduct] = rank
-            rank += 1
+            rank &+= 1
         }
 
         // we can reuse these bit sequences for straights
@@ -121,41 +121,41 @@ struct LookupTable {
         Reuses bit sequences from flush calculations.
     */
     mutating func straightAndHighCards(straights: [Int], highCards: [Int]) {
-        var rank = Self.MAX_FLUSH + 1
+        var rank = Self.MAX_FLUSH &+ 1
         for s in straights {
             let primeProduct = Card.primeProductFromRankbits(s)
             unsuitedLookup[primeProduct] = rank
-            rank += 1
+            rank &+= 1
         }
 
-        rank = Self.MAX_PAIR + 1
+        rank = Self.MAX_PAIR &+ 1
         for h in highCards {
             let primeProduct = Card.primeProductFromRankbits(h)
             unsuitedLookup[primeProduct] = rank
-            rank += 1
+            rank &+= 1
         }
     }
 
     /// Pair, Two Pair, Three of a Kind, Full House, and 4 of a Kind.
     mutating func multiples() {
-        let backwardsRanks = Array((0...Card.INT_RANKS.count - 1).reversed())
+        let backwardsRanks = Array((0...Card.INT_RANKS.count &- 1).reversed())
 
         // 1) Four of a kind
-        var rank = Self.MAX_STRAIGHT_FLUSH + 1
+        var rank = Self.MAX_STRAIGHT_FLUSH &+ 1
         // for each choice of a set of four ranks
         for i in backwardsRanks {
             // and for each possible kicker rank
             var kickers = backwardsRanks
             kickers.removeFirst { $0 == i }
             for k in kickers {
-                let product = Card.PRIMES[i] ** 4 * Card.PRIMES[k]
+                let product = Card.PRIMES[i] ** 4 &* Card.PRIMES[k]
                 unsuitedLookup[product] = rank
-                rank += 1
+                rank &+= 1
             }
         }
 
         // 2) Full house
-        rank = Self.MAX_FOUR_OF_A_KIND + 1
+        rank = Self.MAX_FOUR_OF_A_KIND &+ 1
 
         // for each three of a kind
         for i in backwardsRanks {
@@ -163,14 +163,14 @@ struct LookupTable {
             var pairRanks = backwardsRanks
             pairRanks.removeFirst { $0 == i }
             for pr in pairRanks {
-                let product = Card.PRIMES[i] ** 3 * Card.PRIMES[pr] ** 2
+                let product = Card.PRIMES[i] ** 3 &* Card.PRIMES[pr] ** 2
                 unsuitedLookup[product] = rank
-                rank += 1
+                rank &+= 1
             }
         }
 
         // 3) Three of a kind
-        rank = Self.MAX_STRAIGHT + 1
+        rank = Self.MAX_STRAIGHT &+ 1
 
         // pick 3 of one rank
         for i in backwardsRanks {
@@ -179,14 +179,14 @@ struct LookupTable {
             let combos = CombinationsGenerator(pool: kickers, r: 2)
             for k in combos {
                 let c1 = k[0], c2 = k[1]
-                let product = Card.PRIMES[i] ** 3 * Card.PRIMES[c1] * Card.PRIMES[c2]
+                let product = Card.PRIMES[i] ** 3 &* Card.PRIMES[c1] &* Card.PRIMES[c2]
                 unsuitedLookup[product] = rank
-                rank += 1
+                rank &+= 1
             }
         }
 
         // 4) Two Pair
-        rank = Self.MAX_THREE_OF_A_KIND + 1
+        rank = Self.MAX_THREE_OF_A_KIND &+ 1
         let twoPairsCombos = CombinationsGenerator(pool: backwardsRanks, r: 2)
         for twoPair in twoPairsCombos {
             let pair1 = twoPair[0], pair2 = twoPair[1]
@@ -194,14 +194,14 @@ struct LookupTable {
             kickers.removeFirst { $0 == pair1 }
             kickers.removeFirst { $0 == pair2 }
             for kicker in kickers {
-                let product = Card.PRIMES[pair1] ** 2 * Card.PRIMES[pair2] ** 2 * Card.PRIMES[kicker]
+                let product = Card.PRIMES[pair1] ** 2 &* Card.PRIMES[pair2] ** 2 &* Card.PRIMES[kicker]
                 unsuitedLookup[product] = rank
-                rank += 1
+                rank &+= 1
             }
         }
 
         // 5) Pair
-        rank = Self.MAX_TWO_PAIR + 1
+        rank = Self.MAX_TWO_PAIR &+ 1
 
         // choose a pair
         for pairRank in backwardsRanks {
@@ -210,9 +210,9 @@ struct LookupTable {
             let kickerCombos = CombinationsGenerator(pool: kickers, r: 3)
             for kickerCombo in kickerCombos {
                 let k1 = kickerCombo[0], k2 = kickerCombo[1], k3 = kickerCombo[2]
-                let product = Card.PRIMES[pairRank] ** 2 * Card.PRIMES[k1] * Card.PRIMES[k2] * Card.PRIMES[k3]
+                let product = Card.PRIMES[pairRank] ** 2 &* Card.PRIMES[k1] &* Card.PRIMES[k2] &* Card.PRIMES[k3]
                 unsuitedLookup[product] = rank
-                rank += 1
+                rank &+= 1
             }
         }
     }
