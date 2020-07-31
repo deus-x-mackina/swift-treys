@@ -86,7 +86,7 @@ evaluating poker hands algorithmically.
 
 **Description:**
 
-- Conforms to `equatable`, `hashable`, and `customStringConvertible`
+- Conforms to `Equatable`, `Hashable`, and `CustomStringConvertible`
 - `init(_ rank: Rank, _ suit: Suit)`
 - Can create multiple cards from the static method declared as:
   `func fromStringList(_ strings: [String]) -> [Card]?`. In order to ensure a
@@ -115,8 +115,8 @@ representation of the best poker hand available.
 
 #### `handSummary(board:hands:)`
 
-Pass in a `board` of 5 `Card` instances (an array works here), and a list of
-two-`Card` lists for `hands` to get a chronological breakdown of the poker game
+Pass in a `board` of 5 `Card` instances (an array works here), and an array of
+two-`Card` arrays for `hands` to get a chronological breakdown of the poker game
 that unfolded given the `board` and `hands` passed in. For example:
 
 ```swift
