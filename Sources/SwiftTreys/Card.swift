@@ -218,3 +218,5 @@ extension Card: CustomStringConvertible {
 extension Card: Equatable {}
 
 extension Card: Hashable {}
+
+extension Card: Codable {}

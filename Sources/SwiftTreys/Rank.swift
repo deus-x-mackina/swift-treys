@@ -13,3 +13,15 @@ public enum Rank: String, CaseIterable {
     case king = "K"
     case ace = "A"
 }
+
+extension Rank: Equatable {}
+
+extension Rank: Hashable {}
+
+extension Rank: Codable {}
+
+extension Rank: Comparable {
+    public static func <(lhs: Rank, rhs: Rank) -> Bool {
+        Card.CHAR_RANK_TO_INT_RANK[Character(lhs.rawValue)]! < Card.CHAR_RANK_TO_INT_RANK[Character(rhs.rawValue)]!
+    }
+}

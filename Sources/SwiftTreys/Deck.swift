@@ -55,3 +55,5 @@ extension Deck: Collection {
     public typealias Element = Card
     public typealias Index = Array<Card>.Index
 }
+
+extension Deck: Codable {}

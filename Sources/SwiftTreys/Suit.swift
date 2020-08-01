@@ -4,3 +4,9 @@ public enum Suit: String, CaseIterable {
     case spades = "s"
     case diamonds = "d"
 }
+
+extension Suit: Equatable {}
+
+extension Suit: Hashable {}
+
+extension Suit: Codable {}
