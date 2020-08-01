@@ -30,7 +30,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/blitzensblitzin/swift-treys.git",
-            from: "0.1.2"),
+            from: "0.1.3"),
         ]
     // ...
 )
@@ -86,7 +86,7 @@ evaluating poker hands algorithmically.
 
 **Description:**
 
-- Conforms to `Equatable`, `Hashable`, and `CustomStringConvertible`
+- Conforms to `Equatable`, `Hashable`, `CustomStringConvertible`, and `Codable`
 - `init(_ rank: Rank, _ suit: Suit)`
 - Can create multiple cards from the static method declared as:
   `func fromStringList(_ strings: [String]) -> [Card]?`. In order to ensure a
