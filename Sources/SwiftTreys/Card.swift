@@ -67,8 +67,8 @@ public struct Card {
     public init(_ rank: Rank, _ suit: Suit) {
         self.rank = rank
         self.suit = suit
-        let rankChar = rank.rawValue
-        let suitChar = suit.rawValue
+        let rankChar = Character(rank.rawValue)
+        let suitChar = Character(suit.rawValue)
 
         let rankInt = Self.CHAR_RANK_TO_INT_RANK[rankChar]!
         let suitInt = Self.CHAR_SUIT_TO_INT_SUIT[suitChar]!
@@ -129,8 +129,8 @@ public struct Card {
             guard str.count == 2 else { return nil }
             let rankChar = str[str.startIndex]
             let suitCar = str[str.index(after: str.startIndex)]
-            guard let rank = Rank(rawValue: rankChar),
-                  let suit = Suit(rawValue: suitCar) else { return nil }
+            guard let rank = Rank(rawValue: String(rankChar)),
+                  let suit = Suit(rawValue: String(suitCar)) else { return nil }
             cards.append(Card(rank, suit))
         }
         return cards

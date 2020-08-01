@@ -1,4 +1,4 @@
-public enum Rank: Character, CaseIterable {
+public enum Rank: String, CaseIterable {
     case two = "2"
     case three = "3"
     case four = "4"
