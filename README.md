@@ -2,8 +2,8 @@
 
 A Swift port of [ihendley/treys](https://github.com/ihendley/treys/), who
 provided the original implementation for the logic in Python, which was itself
-based on [Cactus Kev's Algorith](http://suffe.cool/poker/evaluator.html). I have
-translated the logic into Swift, keeping core features but making "Swifty"
+based on [Cactus Kev's Algorithm](http://suffe.cool/poker/evaluator.html). I
+have translated the logic into Swift, keeping core features but making "Swifty"
 adjustments where convenient. I have also retained the vast majority of the
 original documentation and variables names, again with amendments as needed.
 
