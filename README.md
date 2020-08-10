@@ -29,8 +29,8 @@ let package = Package(
     // ...
     dependencies: [
         .package(
-            url: "https://github.com/blitzensblitzin/swift-treys.git",
-            from: "0.1.3"),
+            url: "https://github.com/deus-x-mackina/swift-treys.git",
+            from: "0.1.4"),
         ]
     // ...
 )
@@ -42,7 +42,7 @@ If cloning the repo manually, you have a bit more flexibility with the things
 you can play around with.
 
 ```shell script
-git clone https://github.com/blitzensblitzin/swift-treys.git
+git clone https://github.com/deus-x-mackina/swift-treys.git
 cd swift-treys
 ```
 
