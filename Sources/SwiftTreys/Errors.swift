@@ -24,3 +24,45 @@ public enum SwiftTreysError: Error {
     /// did not receive a list of valid poker hands comprised of 2 cards each.
     case invalidPokerHand(incorrectCardCount: Int)
 }
+
+extension SwiftTreysError: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        switch self {
+        case let .invalidNumberOfCards(n):
+            return """
+                   Evaluator method evaluate(cards:board:) received \
+                   \(n) cards instead of 5 - 7 cards.
+                   """
+        case .cardsNotUnique: return "The cards supplied to the Evaluator were not all unique."
+        case let .invalidHandRankInteger(n):
+            return """
+                   Evaluator method getRankClass(handRank:) \
+                   received a hand rank integer representation \
+                   of \(n) rather than a value between 0 and 7462.
+                   """
+        case let .invalidHandClassInteger(n):
+            return """
+                   Evaluator method classToString(classInt:) \
+                   could not look up the hand class integer \
+                   \(n). Expected a value from 1 to 9.
+                   """
+        case let .invalidPokerBoard(incorrectCardCount: n):
+            return """
+                   Evaluator method \
+                   handSummary(board:hands:) \
+                   received a board comprised of \
+                   \(n) cards, rather than 5 cards.
+                   """
+        case let .invalidPokerHand(incorrectCardCount: n):
+            return """
+                   Evaluator method \
+                   handSummary(board:hands:) \
+                   did not receive a list of valid \
+                   poker hands comprised of 2 cards \
+                   each. Got a hand with \(n) cards \
+                   instead.
+                   """
+        }
+    }
+    public var debugDescription: String { description }
+}
