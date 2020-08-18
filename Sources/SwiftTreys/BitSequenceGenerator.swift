@@ -1,10 +1,7 @@
-/**
-    Bit hack from here:
-    http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation
-
-    Generator even does this in poker order rank
-    so no need to sort when done! Perfect.
-*/
+/// Bit hack from here: http://www-graphics.stanford.edu/~seander/bithacks.html#NextBitPermutation.
+///
+/// Generator even does this in poker order rank
+/// so no need to sort when done! Perfect.
 struct BitSequenceGenerator: IteratorProtocol {
     let bits: Int
     var calledOnce = false
@@ -30,7 +27,7 @@ struct BitSequenceGenerator: IteratorProtocol {
 }
 
 infix operator /!: MultiplicationPrecedence
-fileprivate func /!(lhs: Int, rhs: Int) -> Int {
+fileprivate func /! (lhs: Int, rhs: Int) -> Int {
     let d: Double = Double(lhs) / Double(rhs)
     return Int(d.rounded(.down))
 }

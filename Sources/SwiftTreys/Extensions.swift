@@ -1,14 +1,10 @@
 extension Collection {
     // Safe Collection indexing
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
-    }
+    subscript(safe index: Index) -> Element? { indices.contains(index) ? self[index] : nil }
 }
 
 extension Collection where Element: Hashable {
-    var allUnique: Bool {
-        Set(self).count == self.count
-    }
+    var allUnique: Bool { Set(self).count == self.count }
 }
 
 extension String {
@@ -19,8 +15,9 @@ extension String {
 }
 
 extension Array {
-    @discardableResult
-    mutating func removeFirst(where f: (Element) throws -> Bool) rethrows -> Element? {
+    @discardableResult mutating func removeFirst(where f: (Element) throws -> Bool) rethrows
+        -> Element?
+    {
         var copy = self
         for (index, el) in self.enumerated() {
             if try f(el) {

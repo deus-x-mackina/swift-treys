@@ -12,27 +12,13 @@ struct LookupTable {
     static let MAX_HIGH_CARD = 7462
 
     static let MAX_TO_RANK_CLASS = [
-        MAX_STRAIGHT_FLUSH: 1,
-        MAX_FOUR_OF_A_KIND: 2,
-        MAX_FULL_HOUSE: 3,
-        MAX_FLUSH: 4,
-        MAX_STRAIGHT: 5,
-        MAX_THREE_OF_A_KIND: 6,
-        MAX_TWO_PAIR: 7,
-        MAX_PAIR: 8,
-        MAX_HIGH_CARD: 9,
+        MAX_STRAIGHT_FLUSH: 1, MAX_FOUR_OF_A_KIND: 2, MAX_FULL_HOUSE: 3, MAX_FLUSH: 4,
+        MAX_STRAIGHT: 5, MAX_THREE_OF_A_KIND: 6, MAX_TWO_PAIR: 7, MAX_PAIR: 8, MAX_HIGH_CARD: 9,
     ]
 
     static let RANK_CLASS_TO_STRING = [
-        1: "Straight Flush",
-        2: "Four of a Kind",
-        3: "Full House",
-        4: "Flush",
-        5: "Straight",
-        6: "Three of a Kind",
-        7: "Two Pair",
-        8: "Pair",
-        9: "High Card",
+        1: "Straight Flush", 2: "Four of a Kind", 3: "Full House", 4: "Flush", 5: "Straight",
+        6: "Three of a Kind", 7: "Two Pair", 8: "Pair", 9: "High Card",
     ]
 
     var flushLookup = [Int: Int]()
@@ -43,24 +29,21 @@ struct LookupTable {
         multiples()
     }
 
-    /**
-        Straight flushes and flushes
-
-        Lookup is done on 13 bit integer (2^13 > 7462):
-        xxxbbbbb bbbbbbbb => integer hand index
-    */
+    // Straight flushes and flushes
+    // Lookup is done on 13 bit integer (2^13 > 7462):
+    // xxxbbbbb bbbbbbbb => integer hand index
     mutating func flushes() {
         let straightFlushes = [
-            7936, // Int('1111100000000', radix: 2), royal flush
-            3968, // Int('111110000000', radix: 2),
-            1984, // Int('11111000000', radix: 2),
-            992, // Int('1111100000', radix: 2),
-            496, // Int('111110000', radix: 2),
-            248, // Int('11111000', radix: 2),
-            124, // Int('1111100', radix: 2),
-            62, // Int('111110', radix: 2),
-            31, // Int('11111', radix: 2),
-            4111   // Int('1000000001111', radix: 2), 5 high
+            7936,  // Int('1111100000000', radix: 2), royal flush
+            3968,  // Int('111110000000', radix: 2),
+            1984,  // Int('11111000000', radix: 2),
+            992,  // Int('1111100000', radix: 2),
+            496,  // Int('111110000', radix: 2),
+            248,  // Int('11111000', radix: 2),
+            124,  // Int('1111100', radix: 2),
+            62,  // Int('111110', radix: 2),
+            31,  // Int('11111', radix: 2),
+            4111,  // Int('1000000001111', radix: 2), 5 high
         ]
 
         // now we'll dynamically generate all the other
@@ -115,11 +98,8 @@ struct LookupTable {
         straightAndHighCards(straights: straightFlushes, highCards: flushes)
     }
 
-    /**
-        Unique five card sets. Straights and high cards.
-
-        Reuses bit sequences from flush calculations.
-    */
+    // Unique five card sets. Straights and high cards.
+    // Reuses bit sequences from flush calculations.
     mutating func straightAndHighCards(straights: [Int], highCards: [Int]) {
         var rank = Self.MAX_FLUSH &+ 1
         for s in straights {
@@ -178,7 +158,8 @@ struct LookupTable {
             kickers.removeFirst { $0 == i }
             let combos = CombinationsGenerator(pool: kickers, r: 2)
             for k in combos {
-                let c1 = k[0], c2 = k[1]
+                let c1 = k[0]
+                let c2 = k[1]
                 let product = Card.PRIMES[i] ** 3 &* Card.PRIMES[c1] &* Card.PRIMES[c2]
                 unsuitedLookup[product] = rank
                 rank &+= 1
@@ -189,12 +170,14 @@ struct LookupTable {
         rank = Self.MAX_THREE_OF_A_KIND &+ 1
         let twoPairsCombos = CombinationsGenerator(pool: backwardsRanks, r: 2)
         for twoPair in twoPairsCombos {
-            let pair1 = twoPair[0], pair2 = twoPair[1]
+            let pair1 = twoPair[0]
+            let pair2 = twoPair[1]
             var kickers = backwardsRanks
             kickers.removeFirst { $0 == pair1 }
             kickers.removeFirst { $0 == pair2 }
             for kicker in kickers {
-                let product = Card.PRIMES[pair1] ** 2 &* Card.PRIMES[pair2] ** 2 &* Card.PRIMES[kicker]
+                let product =
+                    Card.PRIMES[pair1] ** 2 &* Card.PRIMES[pair2] ** 2 &* Card.PRIMES[kicker]
                 unsuitedLookup[product] = rank
                 rank &+= 1
             }
@@ -209,8 +192,12 @@ struct LookupTable {
             kickers.removeFirst { $0 == pairRank }
             let kickerCombos = CombinationsGenerator(pool: kickers, r: 3)
             for kickerCombo in kickerCombos {
-                let k1 = kickerCombo[0], k2 = kickerCombo[1], k3 = kickerCombo[2]
-                let product = Card.PRIMES[pairRank] ** 2 &* Card.PRIMES[k1] &* Card.PRIMES[k2] &* Card.PRIMES[k3]
+                let k1 = kickerCombo[0]
+                let k2 = kickerCombo[1]
+                let k3 = kickerCombo[2]
+                let product =
+                    Card.PRIMES[pairRank] ** 2 &* Card.PRIMES[k1] &* Card.PRIMES[k2]
+                    &* Card.PRIMES[k3]
                 unsuitedLookup[product] = rank
                 rank &+= 1
             }
@@ -224,6 +211,4 @@ precedencegroup ExponentialPrecedence {
     higherThan: MultiplicationPrecedence
 }
 
-fileprivate func **(lhs: Int, rhs: Int) -> Int {
-    Int(pow(Double(lhs), Double(rhs)))
-}
+fileprivate func ** (lhs: Int, rhs: Int) -> Int { Int(pow(Double(lhs), Double(rhs))) }

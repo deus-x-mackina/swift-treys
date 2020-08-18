@@ -1,5 +1,5 @@
 /// Swift translations of Pythons `itertools.combinations()` function.
-/// https://docs.python.org/3/library/itertools.html#itertools.combinations
+/// https://docs.python.org/3/library/itertools.html#itertools.combinations.
 struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
     private let pool: [T]
     private let r: Int
@@ -32,9 +32,7 @@ struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
         }
         if !broken { return nil }
         indices[index] &+= 1
-        for i in (index &+ 1)..<r {
-            indices[i] = indices[i &- 1] &+ 1
-        }
+        for i in (index &+ 1)..<r { indices[i] = indices[i &- 1] &+ 1 }
         let ret = indices.map { pool[$0] }
         return ret
     }
