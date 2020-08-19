@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import SwiftTreys
 
 final class LookupTableTests: XCTestCase {

@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import SwiftTreys
 
 final class ExtensionsTests: XCTestCase {
@@ -6,11 +7,7 @@ final class ExtensionsTests: XCTestCase {
         let array = [1, 2, 3]
         let string = "hello"
         let set: Set = ["unique", "new york"]
-        let dict = [
-            "Swift": "Pretty cool",
-            "Python": "Also pretty cool",
-            "Java": "No thanks",
-        ]
+        let dict = ["Swift": "Pretty cool", "Python": "Also pretty cool", "Java": "No thanks"]
         var notNil: Any?
         var isNil: Any?
         func assertions() {
@@ -59,7 +56,8 @@ final class ExtensionsTests: XCTestCase {
     }
 
     func testCollectionExtensionAllUnique() throws {
-        let unique = ["a", "b", "c"], notUnique = [1, 1, 1]
+        let unique = ["a", "b", "c"]
+        let notUnique = [1, 1, 1]
         XCTAssertTrue(unique.allUnique && !notUnique.allUnique)
     }
 }
