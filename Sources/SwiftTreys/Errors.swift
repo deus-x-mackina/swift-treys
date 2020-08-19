@@ -59,10 +59,14 @@ extension SwiftTreysError: CustomStringConvertible, CustomDebugStringConvertible
                    handSummary(board:hands:) \
                    did not receive a list of valid \
                    poker hands comprised of 2 cards \
-                   each. Got a hand with \(n) cards \
+                   each. Got a hand with \(n) card(s) \
                    instead.
                    """
         }
     }
     public var debugDescription: String { description }
 }
+
+extension SwiftTreysError: Equatable {}
+
+extension SwiftTreysError: Hashable {}
