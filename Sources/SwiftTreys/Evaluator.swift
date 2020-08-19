@@ -108,6 +108,7 @@ public struct Evaluator {
 
         switch handRank {
 
+        case let x where x < 0: throw SwiftTreysError.invalidHandRankInteger(handRank)
         case let x where x >= 0 && x <= lt.MAX_STRAIGHT_FLUSH: return mtr[lt.MAX_STRAIGHT_FLUSH]!
         case let x where x <= lt.MAX_FOUR_OF_A_KIND: return mtr[lt.MAX_FOUR_OF_A_KIND]!
         case let x where x <= lt.MAX_FULL_HOUSE: return mtr[lt.MAX_FULL_HOUSE]!
