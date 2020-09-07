@@ -3,7 +3,7 @@ import XCTest
 @testable import SwiftTreys
 
 final class ExtensionsTests: XCTestCase {
-    func testCollectionExtension() throws {
+    func testCollectionExtensionSafeIndexing() throws {
         let array = [1, 2, 3]
         let string = "hello"
         let set: Set = ["unique", "new york"]
@@ -36,7 +36,7 @@ final class ExtensionsTests: XCTestCase {
         assertions()
     }
 
-    func testStringExtension() throws {
+    func testStringExtensionJoin() throws {
         let phoneNumber = "".join(["8", "6", "7", "5", "3", "0", "9"])
         XCTAssertTrue(phoneNumber == "8675309")
 
@@ -44,7 +44,7 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertTrue(groceryList == "bread, milk, eggs")
     }
 
-    func testArrayExtensions() throws {
+    func testArrayExtensionRemoveFirst() throws {
         var numbers = [1, 2, 1, 3]
         var removed = numbers.removeFirst { $0 == 1 }
         XCTAssertNotNil(removed)
@@ -59,5 +59,35 @@ final class ExtensionsTests: XCTestCase {
         let unique = ["a", "b", "c"]
         let notUnique = [1, 1, 1]
         XCTAssertTrue(unique.allUnique && !notUnique.allUnique)
+    }
+
+    func testDictionaryExtensionSwapKeysAndValues() throws {
+        let uniqueKeysAndValues = [
+            1: "one",
+            2: "two",
+            3: "three",
+            4: "four",
+            5: "five",
+        ]
+
+        let notUniqueValues = [
+            "hola": "hello",
+            "bonjour": "hello",
+            "sayounara": "goodbye",
+        ]
+
+        let uniqueSwapped = uniqueKeysAndValues.swappingKeysAndValues()
+        let notUniqueSwapped = notUniqueValues.swappingKeysAndValues()
+
+        XCTAssertNotNil(uniqueSwapped)
+        XCTAssertNil(notUniqueSwapped)
+
+        XCTAssert(uniqueSwapped == [
+            "one": 1,
+            "two": 2,
+            "three": 3,
+            "four": 4,
+            "five": 5,
+        ])
     }
 }

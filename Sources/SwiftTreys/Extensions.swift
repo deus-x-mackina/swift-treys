@@ -29,3 +29,12 @@ extension Array {
         return nil
     }
 }
+
+extension Dictionary where Value: Hashable {
+    func swappingKeysAndValues() -> [Value: Key]? {
+        guard Set(values).count == Set(keys).count else { return nil }
+        return reduce(into: [:]) { (res: inout [Value: Key], next) in
+            res[next.value] = next.key
+        }
+    }
+}
