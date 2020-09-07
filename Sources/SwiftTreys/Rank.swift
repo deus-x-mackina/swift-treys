@@ -1,3 +1,5 @@
+/// An enumeration type representing the thirteen possible
+/// ranks that a card can have.
 public enum Rank: String, CaseIterable {
     case two = "2"
     case three = "3"

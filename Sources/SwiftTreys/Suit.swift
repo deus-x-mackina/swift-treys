@@ -1,3 +1,5 @@
+/// An enumeration type representing the four suits
+/// that a card can have.
 public enum Suit: String, CaseIterable {
     case clubs = "c"
     case hearts = "h"
