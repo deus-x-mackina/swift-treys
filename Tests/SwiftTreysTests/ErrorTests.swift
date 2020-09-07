@@ -146,7 +146,9 @@ final class ErrorTests: XCTestCase {
         do {
             // Too low of a rank
             let lowRank = 0
-            XCTAssertThrowsError(try Evaluator.classRankToPokerHand(classRank: lowRank)) { error = $0 }
+            XCTAssertThrowsError(try Evaluator.classRankToPokerHand(classRank: lowRank)) {
+                error = $0
+            }
             XCTAssert(error is SwiftTreysError)
             XCTAssert(error as? SwiftTreysError == .invalidHandClassInteger(lowRank))
             XCTAssert(

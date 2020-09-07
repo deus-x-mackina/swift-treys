@@ -62,19 +62,9 @@ final class ExtensionsTests: XCTestCase {
     }
 
     func testDictionaryExtensionSwapKeysAndValues() throws {
-        let uniqueKeysAndValues = [
-            1: "one",
-            2: "two",
-            3: "three",
-            4: "four",
-            5: "five",
-        ]
+        let uniqueKeysAndValues = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
 
-        let notUniqueValues = [
-            "hola": "hello",
-            "bonjour": "hello",
-            "sayounara": "goodbye",
-        ]
+        let notUniqueValues = ["hola": "hello", "bonjour": "hello", "sayounara": "goodbye"]
 
         let uniqueSwapped = uniqueKeysAndValues.swappingKeysAndValues()
         let notUniqueSwapped = notUniqueValues.swappingKeysAndValues()
@@ -82,12 +72,6 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertNotNil(uniqueSwapped)
         XCTAssertNil(notUniqueSwapped)
 
-        XCTAssert(uniqueSwapped == [
-            "one": 1,
-            "two": 2,
-            "three": 3,
-            "four": 4,
-            "five": 5,
-        ])
+        XCTAssert(uniqueSwapped == ["one": 1, "two": 2, "three": 3, "four": 4, "five": 5])
     }
 }
