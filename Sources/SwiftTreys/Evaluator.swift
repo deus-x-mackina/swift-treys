@@ -49,9 +49,9 @@ public struct Evaluator {
     ///     `SwiftTreysError.invalidNumberOfCards(_:)` if the total number of `Card`s between `board`
     ///     and `hand` are not between 5 and 7.
     public static func classifyPokerHand<T: RangeReplaceableCollection>(cards: T, board: T? = nil)
-        throws -> String where T.Element == Card
+        throws -> PokerHandClass where T.Element == Card
     {
-        try classRankToString(
+        try classRankToPokerHand(
             classRank: getClassRank(handRank: evaluate(cards: cards, board: board)))
     }
 
@@ -128,8 +128,8 @@ public struct Evaluator {
     /// - Returns: The `String` representation of the rank class, i.e., "Straight Flush".
     /// - Throws: `SwiftTreysError.invalidHandClassInteger(_:)` if the class rank is not
     ///     between 1 and 9.
-    public static func classRankToString(classRank: ClassRank) throws -> String {
-        guard let result = LookupTable.RANK_CLASS_TO_STRING[classRank] else {
+    public static func classRankToPokerHand(classRank: ClassRank) throws -> PokerHandClass {
+        guard let result = LookupTable.RANK_CLASS_TO_POKER_HAND[classRank] else {
             throw SwiftTreysError.invalidHandClassInteger(classRank)
         }
         return result
@@ -183,7 +183,7 @@ public struct Evaluator {
                 // evaluate current board position
                 let rank = try! evaluate(cards: hand, board: T(board[0..<(i + 3)]))
                 let rankClass = try! getClassRank(handRank: rank)
-                let classString = try! classRankToString(classRank: rankClass)
+                let classString = try! classRankToPokerHand(classRank: rankClass)
                 // higher better here
                 let percentage = 1.0 - getFiveCardRankPercentage(handRank: rank)
                 print(
@@ -213,7 +213,7 @@ public struct Evaluator {
 
             // otherwise on all other streets
             else {
-                let handResult = try! classRankToString(
+                let handResult = try! classRankToPokerHand(
                     classRank: getClassRank(
                         handRank: evaluate(cards: hands[winners[0]], board: board)))
                 print("\n\(line) HAND OVER \(line)")

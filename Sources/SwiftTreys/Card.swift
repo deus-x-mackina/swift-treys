@@ -64,8 +64,8 @@ public struct Card {
     public init(_ rank: Rank, _ suit: Suit) {
         self.rank = rank
         self.suit = suit
-        let rankChar = Character(rank.rawValue)
-        let suitChar = Character(suit.rawValue)
+        let rankChar = rank.rawValue.first!
+        let suitChar = suit.rawValue.first!
 
         let rankInt = Self.CHAR_RANK_TO_INT_RANK[rankChar]!
         let suitInt = Self.CHAR_SUIT_TO_INT_SUIT[suitChar]!

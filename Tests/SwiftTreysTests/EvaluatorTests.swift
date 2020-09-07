@@ -19,57 +19,57 @@ final class EvaluatorTests: XCTestCase {
 
     func testFiveCardHandHighCard() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(cards: RepresentativeFiveCardHand.highCard)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[9]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[9]!)
     }
 
     func testFiveCardHandPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(cards: RepresentativeFiveCardHand.pair)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[8]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[8]!)
     }
 
     func testFiveCardHandTwoPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(cards: RepresentativeFiveCardHand.twoPair)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[7]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[7]!)
     }
 
     func testFiveCardHandThreeOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeFiveCardHand.threeOfAKind)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[6]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[6]!)
     }
 
     func testFiveCardHandStraight() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(cards: RepresentativeFiveCardHand.straight)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[5]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[5]!)
     }
 
     func testFiveCardHandFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(cards: RepresentativeFiveCardHand.flush)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[4]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[4]!)
     }
 
     func testFiveCardHandFullHouse() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeFiveCardHand.fullHouse)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[3]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[3]!)
     }
 
     func testFiveCardHandFourOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeFiveCardHand.fourOfAKind)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[2]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[2]!)
     }
 
     func testFiveCardHandStraightFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeFiveCardHand.straightFlush)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
     }
 
     func testFiveCardHandRoyalFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeFiveCardHand.royalFlush)
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
         let rank = try! Evaluator.evaluate(cards: RepresentativeFiveCardHand.royalFlush)
         XCTAssertTrue(rank == 1)
     }
@@ -78,70 +78,70 @@ final class EvaluatorTests: XCTestCase {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.highCard[0..<2],
             board: RepresentativeSixCardHand.highCard[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[9]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[9]!)
     }
 
     func testSixCardHandPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.pair[0..<2],
             board: RepresentativeSixCardHand.pair[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[8]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[8]!)
     }
 
     func testSixCardHandTwoPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.twoPair[0..<2],
             board: RepresentativeSixCardHand.twoPair[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[7]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[7]!)
     }
 
     func testSixCardHandThreeOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.threeOfAKind[0..<2],
             board: RepresentativeSixCardHand.threeOfAKind[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[6]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[6]!)
     }
 
     func testSixCardHandStraight() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.straight[0..<2],
             board: RepresentativeSixCardHand.straight[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[5]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[5]!)
     }
 
     func testSixCardHandFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.flush[0..<2],
             board: RepresentativeSixCardHand.flush[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[4]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[4]!)
     }
 
     func testSixCardHandFullHouse() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.fullHouse[0..<2],
             board: RepresentativeSixCardHand.fullHouse[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[3]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[3]!)
     }
 
     func testSixCardHandFourOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.fourOfAKind[0..<2],
             board: RepresentativeSixCardHand.fourOfAKind[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[2]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[2]!)
     }
 
     func testSixCardHandStraightFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.straightFlush[0..<2],
             board: RepresentativeSixCardHand.straightFlush[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
     }
 
     func testSixCardHandRoyalFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSixCardHand.royalFlush[0..<2],
             board: RepresentativeSixCardHand.royalFlush[2..<6])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
         let rank = try! Evaluator.evaluate(cards: RepresentativeFiveCardHand.royalFlush)
         XCTAssertTrue(rank == 1)
     }
@@ -150,70 +150,70 @@ final class EvaluatorTests: XCTestCase {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.highCard[0..<2],
             board: RepresentativeSevenCardHand.highCard[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[9]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[9]!)
     }
 
     func testSevenCardHandPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.pair[0..<2],
             board: RepresentativeSevenCardHand.pair[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[8]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[8]!)
     }
 
     func testSevenCardHandTwoPair() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.twoPair[0..<2],
             board: RepresentativeSevenCardHand.twoPair[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[7]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[7]!)
     }
 
     func testSevenCardHandThreeOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.threeOfAKind[0..<2],
             board: RepresentativeSevenCardHand.threeOfAKind[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[6]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[6]!)
     }
 
     func testSevenCardHandStraight() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.straight[0..<2],
             board: RepresentativeSevenCardHand.straight[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[5]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[5]!)
     }
 
     func testSevenCardHandFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.flush[0..<2],
             board: RepresentativeSevenCardHand.flush[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[4]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[4]!)
     }
 
     func testSevenCardHandFullHouse() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.fullHouse[0..<2],
             board: RepresentativeSevenCardHand.fullHouse[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[3]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[3]!)
     }
 
     func testSevenCardHandFourOfAKind() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.fourOfAKind[0..<2],
             board: RepresentativeSevenCardHand.fourOfAKind[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[2]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[2]!)
     }
 
     func testSevenCardHandStraightFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.straightFlush[0..<2],
             board: RepresentativeSevenCardHand.straightFlush[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
     }
 
     func testSevenCardHandRoyalFlush() throws {
         let pokerHand = try! Evaluator.classifyPokerHand(
             cards: RepresentativeSevenCardHand.royalFlush[0..<2],
             board: RepresentativeSevenCardHand.royalFlush[2..<7])
-        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_STRING[1]!)
+        XCTAssertTrue(pokerHand == LookupTable.RANK_CLASS_TO_POKER_HAND[1]!)
         let rank = try! Evaluator.evaluate(cards: RepresentativeFiveCardHand.royalFlush)
         XCTAssertTrue(rank == 1)
     }

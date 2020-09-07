@@ -16,13 +16,13 @@ struct LookupTable {
         MAX_STRAIGHT: 5, MAX_THREE_OF_A_KIND: 6, MAX_TWO_PAIR: 7, MAX_PAIR: 8, MAX_HIGH_CARD: 9,
     ]
 
-    static let RANK_CLASS_TO_STRING = [
-        1: "Straight Flush", 2: "Four of a Kind", 3: "Full House", 4: "Flush", 5: "Straight",
-        6: "Three of a Kind", 7: "Two Pair", 8: "Pair", 9: "High Card",
+    static let RANK_CLASS_TO_POKER_HAND: [Int: PokerHandClass] = [
+        1: .straightFlush, 2: .fourOfAKind, 3: .fullHouse, 4: .flush, 5: .straight,
+        6: .threeOfAKind, 7: .twoPair, 8: .pair, 9: .highCard,
     ]
 
-    var flushLookup = [Int: Int]()
-    var unsuitedLookup = [Int: Int]()
+    private(set) var flushLookup = [Int: Int]()
+    private(set) var unsuitedLookup = [Int: Int]()
 
     init() {
         flushes()
