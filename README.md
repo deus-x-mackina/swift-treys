@@ -30,7 +30,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/deus-x-mackina/swift-treys.git",
-            from: "0.1.5"),
+            from: "0.2.0"),
         ]
     // ...
 )
