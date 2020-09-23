@@ -4,7 +4,7 @@ public struct Evaluator {
     public typealias HandRank = Int
     public typealias ClassRank = Int
 
-    private static let table = LookupTable()
+    static let table = LookupTable()
 
     private init() {}
 
