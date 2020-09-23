@@ -20,7 +20,7 @@ public struct Deck {
             return [card]
         }
         var cards = [Card]()
-        for _ in 0..<n { cards.append(contentsOf: draw()) }
+        for _ in 0 ..< n { cards.append(contentsOf: draw()) }
         return cards
     }
 

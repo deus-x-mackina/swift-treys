@@ -11,8 +11,8 @@ struct BitSequenceGenerator: IteratorProtocol {
 
     init(_ bits: Int) {
         self.bits = bits
-        t = Int((bits | (bits &- 1))) &+ 1
-        nextBits = t | ((Int(((t & -t) / (bits & -bits))) >> 1) &- 1)
+        t = Int(bits | (bits &- 1)) &+ 1
+        nextBits = t | ((Int((t & -t) / (bits & -bits)) >> 1) &- 1)
     }
 
     mutating func next() -> Int? {
@@ -27,7 +27,7 @@ struct BitSequenceGenerator: IteratorProtocol {
 }
 
 infix operator /!: MultiplicationPrecedence
-fileprivate func /! (lhs: Int, rhs: Int) -> Int {
-    let d: Double = Double(lhs) / Double(rhs)
+private func /! (lhs: Int, rhs: Int) -> Int {
+    let d = Double(lhs) / Double(rhs)
     return Int(d.rounded(.down))
 }

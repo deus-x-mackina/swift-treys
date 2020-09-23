@@ -4,7 +4,7 @@ extension Collection {
 }
 
 extension Collection where Element: Hashable {
-    var allUnique: Bool { Set(self).count == self.count }
+    var allUnique: Bool { Set(self).count == count }
 }
 
 extension String {
@@ -18,7 +18,7 @@ extension Array {
     @discardableResult mutating func removeFirst(where f: (Element) throws -> Bool) rethrows
         -> Element?
     {
-        for (index, el) in self.enumerated() { if try f(el) { return remove(at: index) } }
+        for (index, el) in enumerated() { if try f(el) { return remove(at: index) } }
         return nil
     }
 }

@@ -34,7 +34,8 @@ final class CardTests: XCTestCase {
             let rank = $0.rank
             let suit = $0.suit
             let prettySuit = Card.PRETTY_SUITS[
-                Card.CHAR_SUIT_TO_INT_SUIT[Character(suit.rawValue)]!]!
+                Card.CHAR_SUIT_TO_INT_SUIT[Character(suit.rawValue)]!
+            ]!
             let desc = $0.description
             XCTAssertTrue(desc.contains(rank.rawValue))
             XCTAssertTrue(desc.contains(prettySuit))

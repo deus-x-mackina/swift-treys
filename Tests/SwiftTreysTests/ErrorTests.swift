@@ -15,9 +15,9 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(8))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method evaluate(cards:board:) received \
-                    8 cards instead of 5 - 7 cards.
-                    """)
+                Evaluator method evaluate(cards:board:) received \
+                8 cards instead of 5 - 7 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -32,9 +32,9 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(8))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method evaluate(cards:board:) received \
-                    8 cards instead of 5 - 7 cards.
-                    """)
+                Evaluator method evaluate(cards:board:) received \
+                8 cards instead of 5 - 7 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -49,9 +49,9 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(4))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method evaluate(cards:board:) received \
-                    4 cards instead of 5 - 7 cards.
-                    """)
+                Evaluator method evaluate(cards:board:) received \
+                4 cards instead of 5 - 7 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -66,9 +66,9 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(4))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method evaluate(cards:board:) received \
-                    4 cards instead of 5 - 7 cards.
-                    """)
+                Evaluator method evaluate(cards:board:) received \
+                4 cards instead of 5 - 7 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -115,10 +115,10 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidHandRankInteger(lowRank))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method getRankClass(handRank:) \
-                    received a hand rank integer representation \
-                    of \(lowRank) rather than a value between 0 and 7462.
-                    """)
+                Evaluator method getRankClass(handRank:) \
+                received a hand rank integer representation \
+                of \(lowRank) rather than a value between 0 and 7462.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -132,10 +132,10 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidHandRankInteger(highRank))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method getRankClass(handRank:) \
-                    received a hand rank integer representation \
-                    of \(highRank) rather than a value between 0 and 7462.
-                    """)
+                Evaluator method getRankClass(handRank:) \
+                received a hand rank integer representation \
+                of \(highRank) rather than a value between 0 and 7462.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).description
                     == (error as! SwiftTreysError).debugDescription)
@@ -153,10 +153,10 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidHandClassInteger(lowRank))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method classToString(classInt:) \
-                    could not look up the hand class integer \
-                    \(lowRank). Expected a value from 1 to 9.
-                    """)
+                Evaluator method classToString(classInt:) \
+                could not look up the hand class integer \
+                \(lowRank). Expected a value from 1 to 9.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)
@@ -172,10 +172,10 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidHandClassInteger(highRank))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method classToString(classInt:) \
-                    could not look up the hand class integer \
-                    \(highRank). Expected a value from 1 to 9.
-                    """)
+                Evaluator method classToString(classInt:) \
+                could not look up the hand class integer \
+                \(highRank). Expected a value from 1 to 9.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)
@@ -194,11 +194,11 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidPokerBoard(incorrectCardCount: 6))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method \
-                    handSummary(board:hands:) \
-                    received a board comprised of \
-                    6 cards, rather than 5 cards.
-                    """)
+                Evaluator method \
+                handSummary(board:hands:) \
+                received a board comprised of \
+                6 cards, rather than 5 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)
@@ -214,11 +214,11 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidPokerBoard(incorrectCardCount: 4))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method \
-                    handSummary(board:hands:) \
-                    received a board comprised of \
-                    4 cards, rather than 5 cards.
-                    """)
+                Evaluator method \
+                handSummary(board:hands:) \
+                received a board comprised of \
+                4 cards, rather than 5 cards.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)
@@ -238,13 +238,13 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidPokerHand(incorrectCardCount: 1))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method \
-                    handSummary(board:hands:) \
-                    did not receive a list of valid \
-                    poker hands comprised of 2 cards \
-                    each. Got a hand with 1 card(s) \
-                    instead.
-                    """)
+                Evaluator method \
+                handSummary(board:hands:) \
+                did not receive a list of valid \
+                poker hands comprised of 2 cards \
+                each. Got a hand with 1 card(s) \
+                instead.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)
@@ -261,13 +261,13 @@ final class ErrorTests: XCTestCase {
             XCTAssert(error as? SwiftTreysError == .invalidPokerHand(incorrectCardCount: 3))
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription == """
-                    Evaluator method \
-                    handSummary(board:hands:) \
-                    did not receive a list of valid \
-                    poker hands comprised of 2 cards \
-                    each. Got a hand with 3 card(s) \
-                    instead.
-                    """)
+                Evaluator method \
+                handSummary(board:hands:) \
+                did not receive a list of valid \
+                poker hands comprised of 2 cards \
+                each. Got a hand with 3 card(s) \
+                instead.
+                """)
             XCTAssert(
                 (error as! SwiftTreysError).debugDescription
                     == (error as! SwiftTreysError).description)

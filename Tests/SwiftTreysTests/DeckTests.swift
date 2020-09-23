@@ -16,7 +16,7 @@ final class DeckTests: XCTestCase {
         let hand1 = d.draw(amountToDraw)
         let hand2 = d.draw(amountToDraw)
         var hand3 = [Card]()
-        for _ in 0..<amountToDraw { hand3 += d.draw() }
+        for _ in 0 ..< amountToDraw { hand3 += d.draw() }
 
         XCTAssertTrue(d.count == 52 - (amountToDraw * 3))
         XCTAssertTrue(hand1.count == 5)

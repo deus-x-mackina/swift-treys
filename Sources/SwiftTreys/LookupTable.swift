@@ -34,16 +34,16 @@ struct LookupTable {
     // xxxbbbbb bbbbbbbb => integer hand index
     mutating func flushes() {
         let straightFlushes = [
-            7936,  // Int('1111100000000', radix: 2), royal flush
-            3968,  // Int('111110000000', radix: 2),
-            1984,  // Int('11111000000', radix: 2),
-            992,  // Int('1111100000', radix: 2),
-            496,  // Int('111110000', radix: 2),
-            248,  // Int('11111000', radix: 2),
-            124,  // Int('1111100', radix: 2),
-            62,  // Int('111110', radix: 2),
-            31,  // Int('11111', radix: 2),
-            4111,  // Int('1000000001111', radix: 2), 5 high
+            7936, // Int('1111100000000', radix: 2), royal flush
+            3968, // Int('111110000000', radix: 2),
+            1984, // Int('11111000000', radix: 2),
+            992, // Int('1111100000', radix: 2),
+            496, // Int('111110000', radix: 2),
+            248, // Int('11111000', radix: 2),
+            124, // Int('1111100', radix: 2),
+            62, // Int('111110', radix: 2),
+            31, // Int('11111', radix: 2),
+            4111, // Int('1000000001111', radix: 2), 5 high
         ]
 
         // now we'll dynamically generate all the other
@@ -53,7 +53,7 @@ struct LookupTable {
 
         // 1277 = number of high cards
         // 1277 + straightFlushes.count is number of hands with all cards unique rank
-        for _ in 0..<(1277 &+ straightFlushes.count &- 1) {
+        for _ in 0 ..< (1277 &+ straightFlushes.count &- 1) {
             // pull next flush pattern from our generator
             let f = gen.next()!
 
@@ -118,7 +118,7 @@ struct LookupTable {
 
     /// Pair, Two Pair, Three of a Kind, Full House, and 4 of a Kind.
     mutating func multiples() {
-        let backwardsRanks = Array((0...Card.INT_RANKS.count &- 1).reversed())
+        let backwardsRanks = Array((0 ... Card.INT_RANKS.count &- 1).reversed())
 
         // 1) Four of a kind
         var rank = Self.MAX_STRAIGHT_FLUSH &+ 1
@@ -197,7 +197,7 @@ struct LookupTable {
                 let k3 = kickerCombo[2]
                 let product =
                     Card.PRIMES[pairRank] ** 2 &* Card.PRIMES[k1] &* Card.PRIMES[k2]
-                    &* Card.PRIMES[k3]
+                        &* Card.PRIMES[k3]
                 unsuitedLookup[product] = rank
                 rank &+= 1
             }
@@ -211,4 +211,4 @@ precedencegroup ExponentialPrecedence {
     higherThan: MultiplicationPrecedence
 }
 
-fileprivate func ** (lhs: Int, rhs: Int) -> Int { Int(pow(Double(lhs), Double(rhs))) }
+private func ** (lhs: Int, rhs: Int) -> Int { Int(pow(Double(lhs), Double(rhs))) }

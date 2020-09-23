@@ -25,6 +25,7 @@ extension Rank: Codable {}
 extension Rank: Comparable {
     public static func < (lhs: Rank, rhs: Rank) -> Bool {
         Card.CHAR_RANK_TO_INT_RANK[Character(lhs.rawValue)]! < Card.CHAR_RANK_TO_INT_RANK[
-            Character(rhs.rawValue)]!
+            Character(rhs.rawValue)
+        ]!
     }
 }

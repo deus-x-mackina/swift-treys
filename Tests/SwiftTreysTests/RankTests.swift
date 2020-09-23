@@ -7,40 +7,52 @@ final class RankTests: XCTestCase {
         batchAssert(
             rank: ace,
             greaterThan: [king, queen, ten, nine, eight, seven, six, five, four, three, two],
-            lessThan: [])
+            lessThan: []
+        )
         batchAssert(
             rank: king, greaterThan: [queen, ten, nine, eight, seven, six, five, four, three, two],
-            lessThan: [ace])
+            lessThan: [ace]
+        )
         batchAssert(
             rank: queen, greaterThan: [ten, nine, eight, seven, six, five, four, three, two],
-            lessThan: [ace, king])
+            lessThan: [ace, king]
+        )
         batchAssert(
             rank: ten, greaterThan: [nine, eight, seven, six, five, four, three, two],
-            lessThan: [ace, king, queen])
+            lessThan: [ace, king, queen]
+        )
         batchAssert(
             rank: nine, greaterThan: [eight, seven, six, five, four, three, two],
-            lessThan: [ace, king, queen, ten])
+            lessThan: [ace, king, queen, ten]
+        )
         batchAssert(
             rank: eight, greaterThan: [seven, six, five, four, three, two],
-            lessThan: [ace, king, queen, ten, nine])
+            lessThan: [ace, king, queen, ten, nine]
+        )
         batchAssert(
             rank: seven, greaterThan: [six, five, four, three, two],
-            lessThan: [ace, king, queen, ten, nine, eight])
+            lessThan: [ace, king, queen, ten, nine, eight]
+        )
         batchAssert(
             rank: six, greaterThan: [five, four, three, two],
-            lessThan: [ace, king, queen, ten, nine, eight, seven])
+            lessThan: [ace, king, queen, ten, nine, eight, seven]
+        )
         batchAssert(
             rank: five, greaterThan: [four, three, two],
-            lessThan: [ace, king, queen, ten, nine, eight, seven, six])
+            lessThan: [ace, king, queen, ten, nine, eight, seven, six]
+        )
         batchAssert(
             rank: four, greaterThan: [three, two],
-            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five])
+            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five]
+        )
         batchAssert(
             rank: three, greaterThan: [two],
-            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five, four])
+            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five, four]
+        )
         batchAssert(
             rank: two, greaterThan: [],
-            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five, four, three])
+            lessThan: [ace, king, queen, ten, nine, eight, seven, six, five, four, three]
+        )
     }
 
     func batchAssert(rank: Rank, greaterThan: [Rank], lessThan: [Rank]) {

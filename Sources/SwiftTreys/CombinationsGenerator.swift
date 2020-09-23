@@ -10,8 +10,8 @@ struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
     init(pool: [T], r: Int) {
         self.pool = pool
         self.r = r
-        self.n = pool.count
-        indices = Array(0..<r)
+        n = pool.count
+        indices = Array(0 ..< r)
     }
 
     mutating func next() -> [T]? {
@@ -23,7 +23,7 @@ struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
         }
         var index = 0
         var broken = false
-        for i in (0..<r).reversed() {
+        for i in (0 ..< r).reversed() {
             if indices[i] != i &+ n &- r {
                 broken = true
                 index = i
@@ -32,7 +32,7 @@ struct CombinationsGenerator<T>: IteratorProtocol, Sequence {
         }
         if !broken { return nil }
         indices[index] &+= 1
-        for i in (index &+ 1)..<r { indices[i] = indices[i &- 1] &+ 1 }
+        for i in (index &+ 1) ..< r { indices[i] = indices[i &- 1] &+ 1 }
         let ret = indices.map { pool[$0] }
         return ret
     }

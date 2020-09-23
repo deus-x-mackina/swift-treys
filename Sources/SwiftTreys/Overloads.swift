@@ -4,7 +4,7 @@ func * <C: RangeReplaceableCollection>(lhs: C, rhs: Int) -> C {
     case 1: return lhs
     default:
         var ret = lhs
-        for _ in 0..<rhs - 1 { ret += lhs }
+        for _ in 0 ..< rhs - 1 { ret += lhs }
         return ret
     }
 }

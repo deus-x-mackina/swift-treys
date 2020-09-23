@@ -24,17 +24,17 @@
 public struct Card {
     // The basics
     static let STR_RANKS = Array("23456789TJQKA")
-    static let INT_RANKS = 0...12
+    static let INT_RANKS = 0 ... 12
     static let PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
 
     // Conversion from String => Int
     static let CHAR_RANK_TO_INT_RANK: [Character: Int] = Dictionary(
         uniqueKeysWithValues: zip(STR_RANKS, INT_RANKS))
     static let CHAR_SUIT_TO_INT_SUIT: [Character: Int] = [
-        "s": 1,  // spades
-        "h": 2,  // hearts
-        "d": 4,  // diamonds
-        "c": 8,  // clubs
+        "s": 1, // spades
+        "h": 2, // hearts
+        "d": 4, // diamonds
+        "c": 8, // clubs
     ]
     static let INT_SUIT_TO_CHAR_SUIT = Array("xshxdxxxc")
 
@@ -129,7 +129,7 @@ public struct Card {
 
     // Expects a list of cards.
     static func primeProductFromHand<T: RangeReplaceableCollection>(_ cards: T) -> Int
-    where T.Element == Card { cards.reduce(1) { $0 &* ($1.binaryInteger & 0xFF) } }
+        where T.Element == Card { cards.reduce(1) { $0 &* ($1.binaryInteger & 0xFF) } }
 
     static func primeProductFromRankbits(_ rankbits: Int) -> Int {
         var product = 1
@@ -142,14 +142,13 @@ public struct Card {
 
     // For debugging purposes. Displays the binary number as a human readable string in groups of four digits.
     static func intToBinary(_ cardInt: Int) -> String {
-
         // swift does not produce "0b..." like Python
         let bstr = String(cardInt, radix: 2).reversed()
 
         // output = list("".join(["0000" + "\t"] * 7) + "0000")
         var output = Array("".join(["0000" + "\t"] * 7) + "0000")
 
-        (0..<bstr.count).forEach {
+        (0 ..< bstr.count).forEach {
             output[$0 + Int($0 / 4)] = bstr[bstr.index(bstr.startIndex, offsetBy: $0)]
         }
 
@@ -175,7 +174,7 @@ public struct Card {
 
     static func prettyCards(_ cards: [Card]) -> String {
         var output = ""
-        for i in 0..<cards.count {
+        for i in 0 ..< cards.count {
             let c = cards[i]
             if i != cards.count - 1 {
                 output += intToPrettyStr(c.binaryInteger) + ", "
@@ -189,7 +188,7 @@ public struct Card {
 
 extension Card: CustomStringConvertible {
     /// A pretty-formatted representation of this card.
-    public var description: String { Self.prettyCard(self.binaryInteger) }
+    public var description: String { Self.prettyCard(binaryInteger) }
 }
 
 extension Card: Equatable {}
