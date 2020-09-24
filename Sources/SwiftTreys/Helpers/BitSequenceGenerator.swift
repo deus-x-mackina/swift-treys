@@ -27,7 +27,7 @@ struct BitSequenceGenerator: IteratorProtocol {
 }
 
 infix operator /!: MultiplicationPrecedence
-private func /! (lhs: Int, rhs: Int) -> Int {
+private func /!<T: BinaryInteger> (lhs: T, rhs: T) -> T {
     let d = Double(lhs) / Double(rhs)
-    return Int(d.rounded(.down))
+    return T(d.rounded(.down))
 }
