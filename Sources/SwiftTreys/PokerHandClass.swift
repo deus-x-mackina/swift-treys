@@ -11,16 +11,21 @@ public enum PokerHandClass: String, CaseIterable {
     case fourOfAKind = "Four of a Kind"
     case straightFlush = "Straight Flush"
 
-    private static var ranks = LookupTable.RANK_CLASS_TO_POKER_HAND.swappingKeysAndValues()
-        .unsafelyUnwrapped
+    private static var ranks = LookupTable.RANK_CLASS_TO_POKER_HAND.swappingKeysAndValues()!
 }
 
 extension PokerHandClass: Hashable {}
 
 extension PokerHandClass: Codable {}
 
+extension PokerHandClass: CustomStringConvertible {
+    public var description: String {
+        rawValue
+    }
+}
+
 extension PokerHandClass: Comparable {
     public static func < (lhs: PokerHandClass, rhs: PokerHandClass) -> Bool {
-        PokerHandClass.ranks[lhs].unsafelyUnwrapped > PokerHandClass.ranks[rhs].unsafelyUnwrapped
+        PokerHandClass.ranks[lhs]! > PokerHandClass.ranks[rhs]!
     }
 }
