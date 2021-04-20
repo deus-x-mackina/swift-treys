@@ -22,177 +22,168 @@
 ///
 /// and is also quite performant.
 public struct Card {
-    // The basics
-    static let STR_RANKS = Array("23456789TJQKA")
-    static let INT_RANKS = 0 ... 12
-    static let PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+  /// The unique binary representation of this `Card`'s rank and suit information.
+  public let uniqueInteger: Int32
 
-    // Conversion from String => Int
-    static let CHAR_RANK_TO_INT_RANK: [Character: Int] = Dictionary(
-        uniqueKeysWithValues: zip(STR_RANKS, INT_RANKS))
-    static let CHAR_SUIT_TO_INT_SUIT: [Character: Int] = [
-        "s": 1, // spades
-        "h": 2, // hearts
-        "d": 4, // diamonds
-        "c": 8, // clubs
-    ]
-    static let INT_SUIT_TO_CHAR_SUIT = Array("xshxdxxxc")
+  /// Create a `Card` with the given `Rank` and `Suit` values.
+  public init(_ rank: Rank, _ suit: Suit) {
+    let rankInt = Int32(rank.rawValue)
+    let suitInt = Int32(suit.rawValue)
+    let rankPrime = PRIMES[Int(rankInt)]
+    let bitRank: Int32 = (1 << rankInt) << 16
+    let cardSuit = suitInt << 12
+    let cardRank = rankInt << 8
+    uniqueInteger = bitRank | cardSuit | cardRank | rankPrime
+  }
 
-    // For pretty printing
-    static let PRETTY_SUITS = [1: "\u{2660}", 2: "\u{2665}", 4: "\u{2666}", 8: "\u{2663}"]
+  /// Attempt to create a `Card` using the single-character representations of
+  /// its `Rank` and `Suit`.
+  ///
+  /// Fails unless
+  /// - `rankChar` is one of "23456789TJQKA"
+  /// - `suitChar` is one of "chsd"
+  public init(rankChar: Character, suitChar: Character) throws {
+    guard let rank = Rank(rankChar) else {
+      throw ParseCardError.invalidRank(
+        originalInput: String(rankChar),
+        incorrectChar: rankChar
+      )
+    }
+    guard let suit = Suit(suitChar) else {
+      throw ParseCardError.invalidSuit(
+        originalInput: String(suitChar),
+        incorrectChar: suitChar
+      )
+    }
+    self.init(rank, suit)
+  }
 
-    // Hearts and diamonds
-    static let PRETTY_REDS = [2, 4]
+  /// This `Card`'s `Rank` value, derived from its `uniqueInteger`.
+  public var rank: Rank {
+    let rankInt = (uniqueInteger >> 8) & 0xF
+    return Rank(rawValue: Int8(rankInt))!
+  }
 
-    /// The unique binary representation of this `Card`'s rank and suit information.
-    public let binaryInteger: Int
+  /// This `Card`'s `Suit` value, derived from its `uniqueInteger`.
+  public var suit: Suit {
+    let suitInt = (uniqueInteger >> 12) & 0xF
+    return Suit(rawValue: Int8(suitInt))!
+  }
 
-    /// This `Card`'s rank representation.
-    public let rank: Rank
+  /// Obtain a two-character string that contains this `Card`'s `Rank` character
+  /// followed by its `Suit` character.
+  ///
+  /// For example, the ten of clubs would yield "Tc".
+  public func rankSuitString() -> String {
+    "\(rank.asCharacter())\(suit.asCharacter())"
+  }
 
-    /// This `Card`'s suit representation.
-    public let suit: Suit
+  /// Generate an array of the 52 distinct `Card` combinations.
+  public static func generateDeck(shuffle: Bool = true) -> [Card] {
+    var deck = [Card]()
+    deck.reserveCapacity(52)
+    for rank in Rank.allCases {
+      for suit in Suit.allCases {
+        deck.append(Card(rank, suit))
+      }
+    }
+    if shuffle {
+      deck.shuffle()
+    }
+    return deck
+  }
 
-    /// Create a `Card` instance wrapping the binary integer representation of the card, inspired
-    /// by http://www.suffecool.net/poker/evaluator.html.
-    ///
-    /// This representation is stored within self.binaryInteger
-    ///
-    /// - Parameters:
-    ///   - rank: The `Card`'s rank, of the `Rank` enumeration type
-    ///   - suit: The `Card`'s suit, of the `Suit` enumeration type
-    public init(_ rank: Rank, _ suit: Suit) {
-        self.rank = rank
-        self.suit = suit
-        let rankChar = rank.rawValue.first!
-        let suitChar = suit.rawValue.first!
-
-        let rankInt = Self.CHAR_RANK_TO_INT_RANK[rankChar]!
-        let suitInt = Self.CHAR_SUIT_TO_INT_SUIT[suitChar]!
-        let rankPrime = Self.PRIMES[rankInt]
-
-        let bitRank = (1 << rankInt) << 16
-        let cardSuit = suitInt << 12
-        let cardRank = rankInt << 8
-
-        binaryInteger = bitRank | cardSuit | cardRank | rankPrime
+  /// Attempt to parse a `Card` given the two-character representation of its `Rank`
+  /// and `Suit`.
+  ///
+  /// For example, if you wanted to parse the queen of spades successfully, pass
+  /// "Qs" to this function.
+  public static func parse<S: StringProtocol>(_ str: S) throws -> Self {
+    var chars = str.makeIterator()
+    guard let rank = chars.next(),
+          let suit = chars.next(),
+          case .none = chars.next()
+    else {
+      throw ParseCardError.invalidLength(originalInput: String(str))
     }
 
-    static func intToStr(_ cardInt: Int) -> String? {
-        let rankInt = getRankInt(cardInt)
-        let suitInt = getSuitInt(cardInt)
-
-        guard let rankChar = STR_RANKS[safe: rankInt],
-            let suitChar = INT_SUIT_TO_CHAR_SUIT[safe: suitInt]
-        else { return nil }
-        return String(rankChar) + String(suitChar)
+    let card: Card
+    do {
+      card = try Card(rankChar: rank, suitChar: suit)
+    } catch let ParseCardError.invalidRank(originalInput: _, incorrectChar: ch) {
+      throw ParseCardError.invalidRank(
+        originalInput: String(str),
+        incorrectChar: ch
+      )
+    } catch let ParseCardError.invalidSuit(originalInput: _, incorrectChar: ch) {
+      throw ParseCardError.invalidSuit(
+        originalInput: String(str),
+        incorrectChar: ch
+      )
     }
+    return card
+  }
 
-    static func getRankInt(_ cardInt: Int) -> Int { (cardInt >> 8) & 0xF }
-
-    static func getSuitInt(_ cardInt: Int) -> Int { (cardInt >> 12) & 0xF }
-
-    static func getBitRankInt(_ cardInt: Int) -> Int { (cardInt >> 16) & 0x1FFF }
-
-    static func getPrime(_ cardInt: Int) -> Int { cardInt & 0x3F }
-
-    /// Expects a list of cards as strings and returns a list
-    /// of Cards of same length corresponding to those strings.
-    ///
-    /// The function will return `nil` unless each string in the list is:
-    /// - exactly two characters long
-    /// - the first character (rank) is one of [23456789TJQK]
-    /// - the second character (suit) is one of [chsd]
-    ///
-    /// Example:
-    ///
-    ///     let validStrings = ["As", "Qh", "Tc", "5d"]
-    ///     let invalidStrings = ["ace of spades", "QH", "10c", "5 diamonds"]
-    ///     let notNil: [Card]? = Card.fromStringList(validStrings)  // input successfully parsed
-    ///     let nil: [Card]? = Card.fromStringList(invalidStrings)  // input could not be parsed
-    ///
-    /// - Parameter strings: An `Array` of two-character long `String`s to parse.
-    /// - Returns: An `Array` of `Cards` if parsing was successful, otherwise `nil`.
-    public static func fromStringList(_ strings: [String]) -> [Card]? {
-        var cards = [Card]()
-        for str in strings {
-            guard str.count == 2 else { return nil }
-            let rankChar = str[str.startIndex]
-            let suitCar = str[str.index(after: str.startIndex)]
-            guard let rank = Rank(rawValue: String(rankChar)),
-                let suit = Suit(rawValue: String(suitCar))
-            else { return nil }
-            cards.append(Card(rank, suit))
-        }
-        return cards
+  /// Attempt to parse an array of `Card`s from an array of two-character string
+  /// representations.
+  ///
+  /// This function throws the first error it encounters while parsing.
+  public static func parseArray<Str, Seq>(strings: Seq) throws -> [Card]
+    where
+    Str: StringProtocol,
+    Seq: Sequence,
+    Seq.Element == Str
+  {
+    var cards = [Card]()
+    cards.reserveCapacity(strings.underestimatedCount)
+    for string in strings {
+      let card = try Card.parse(string)
+      cards.append(card)
     }
+    return cards
+  }
 
-    // Expects a list of cards.
-    static func primeProductFromHand<T: RangeReplaceableCollection>(_ cards: T) -> Int
-        where T.Element == Card { cards.reduce(1) { $0 &* ($1.binaryInteger & 0xFF) } }
-
-    static func primeProductFromRankbits(_ rankbits: Int) -> Int {
-        var product = 1
-        INT_RANKS.forEach {
-            // if the ith bit is set
-            if rankbits & (1 << $0) != 0 { product &*= PRIMES[$0] }
-        }
-        return product
+  /// Attempt to parse an array of `Card`s from an array of two-character string
+  /// representations.
+  ///
+  /// The reulsting array will contain a `nil` value upon failure, but all input
+  /// strings will be processed.
+  public static func parseOptionalArray<Str, Seq>(strings: Seq) -> [Self?]
+    where
+    Str: StringProtocol,
+    Seq: Sequence,
+    Seq.Element == Str
+  {
+    var cards = [Card?]()
+    cards.reserveCapacity(strings.underestimatedCount)
+    for string in strings {
+      let card = try? Card.parse(string)
+      cards.append(card)
     }
-
-    // For debugging purposes. Displays the binary number as a human readable string in groups of four digits.
-    static func intToBinary(_ cardInt: Int) -> String {
-        // swift does not produce "0b..." like Python
-        let bstr = String(cardInt, radix: 2).reversed()
-
-        // output = list("".join(["0000" + "\t"] * 7) + "0000")
-        var output = Array("".join(["0000" + "\t"] * 7) + "0000")
-
-        (0 ..< bstr.count).forEach {
-            output[$0 + Int($0 / 4)] = bstr[bstr.index(bstr.startIndex, offsetBy: $0)]
-        }
-
-        output.reverse()
-        return "".join(output.map { String($0) })
-    }
-
-    // Prints a single card
-    static func intToPrettyStr(_ cardInt: Int) -> String {
-        let suitInt = getSuitInt(cardInt)
-        let rankInt = getRankInt(cardInt)
-
-        // If we need to color red
-        var s = PRETTY_SUITS[suitInt]!
-        if PRETTY_REDS.contains(suitInt) { s = "\u{001b}[31m" + s + "\u{001b}[0m" }
-        let r = STR_RANKS[rankInt]
-        return "[\(r)\(s)]"
-    }
-
-    // Renamed from original as the function does not print
-    // anything.
-    static func prettyCard(_ cardInt: Int) -> String { intToPrettyStr(cardInt) }
-
-    static func prettyCards(_ cards: [Card]) -> String {
-        var output = ""
-        for i in 0 ..< cards.count {
-            let c = cards[i]
-            if i != cards.count - 1 {
-                output += intToPrettyStr(c.binaryInteger) + ", "
-            } else {
-                output += intToPrettyStr(c.binaryInteger)
-            }
-        }
-        return output
-    }
-}
-
-extension Card: CustomStringConvertible {
-    /// A pretty-formatted representation of this card.
-    public var description: String { Self.prettyCard(binaryInteger) }
+    return cards
+  }
 }
 
 extension Card: Equatable {}
 
 extension Card: Hashable {}
+
+extension Card: Comparable {
+  public static func < (lhs: Card, rhs: Card) -> Bool {
+    lhs.rank < rhs.rank
+  }
+}
+
+extension Card: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    "Card { uniqueInteger: \(uniqueInteger), rank: \(rank), suit: \(suit.asCharacter()) }"
+  }
+}
+
+extension Card: CustomStringConvertible {
+  public var description: String {
+    "[ \(rank)\(suit) ]"
+  }
+}
 
 extension Card: Codable {}

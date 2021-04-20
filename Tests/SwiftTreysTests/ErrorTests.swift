@@ -1,276 +1,171 @@
+import Algorithms
+@testable import SwiftTreys
 import XCTest
 
-@testable import SwiftTreys
-
 final class ErrorTests: XCTestCase {
-    var error: Error?
+  func testCardFromCharsThrows() throws {
+    let validRanks = "A23456789TJQKA"
+    let validSuits = "chsd"
 
-    func testThrowsInvalidNumberOfCards() throws {
-        do {
-            // First, too many on board
-            let hand = Card.fromStringList(["Th", "3d"])!
-            let board = Card.fromStringList(["5s", "4d", "As", "Kc", "8s", "2c"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand, board: board)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(8))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method evaluate(cards:board:) received \
-                8 cards instead of 5 - 7 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
-
-        do {
-            // Too many in hand
-            let hand = Card.fromStringList(["Th", "3d", "2c"])!
-            let board = Card.fromStringList(["5s", "4d", "As", "Kc", "8s"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand, board: board)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(8))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method evaluate(cards:board:) received \
-                8 cards instead of 5 - 7 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
-
-        do {
-            // Too few in board
-            let hand = Card.fromStringList(["Th", "3d"])!
-            let board = Card.fromStringList(["5s", "4d"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand, board: board)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(4))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method evaluate(cards:board:) received \
-                4 cards instead of 5 - 7 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
-
-        do {
-            // Too few in hand
-            let hand = Card.fromStringList([])!
-            let board = Card.fromStringList(["5s", "4d", "Th", "3d"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand, board: board)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidNumberOfCards(4))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method evaluate(cards:board:) received \
-                4 cards instead of 5 - 7 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
+    let invalidRanks: [Character] = chain(
+      UnicodeScalar("A").value ... UnicodeScalar("Z").value,
+      UnicodeScalar("0").value ... UnicodeScalar("9").value
+    )
+    .reduce(into: []) { arr, i in
+      let scalar = UnicodeScalar(i)!
+      let character = Character(scalar)
+      guard !validRanks.contains(character) else { return }
+      arr.append(character)
     }
 
-    func testThrowsCardsNotUnique() throws {
-        do {
-            // Hand only
-            let hand = Card.fromStringList(["As", "As", "As", "As", "As"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .cardsNotUnique)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == "The cards supplied to the Evaluator were not all unique.")
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
-
-        do {
-            // Hand and board
-            let hand = Card.fromStringList(["As", "Th"])!
-            let board = Card.fromStringList(["As", "Qc", "5h", "2d", "4s"])!
-            XCTAssertThrowsError(try Evaluator.evaluate(cards: hand, board: board)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .cardsNotUnique)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == "The cards supplied to the Evaluator were not all unique.")
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
+    let invalidSuits: [Character] = (UnicodeScalar("a").value ... UnicodeScalar("z").value).reduce(into: []) { arr, i in
+      let scalar = UnicodeScalar(i)!
+      let character = Character(scalar)
+      guard !validSuits.contains(character) else { return }
+      arr.append(character)
     }
 
-    func testThrowsInvalidHandRankInteger() throws {
-        do {
-            // Too low of a rank
-            let lowRank = -1
-            XCTAssertThrowsError(try Evaluator.getClassRank(handRank: lowRank)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidHandRankInteger(lowRank))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method getRankClass(handRank:) \
-                received a hand rank integer representation \
-                of \(lowRank) rather than a value between 0 and 7462.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
-
-        do {
-            // Too high of a rank
-            let highRank = 7463
-            XCTAssertThrowsError(try Evaluator.getClassRank(handRank: highRank)) { error = $0 }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidHandRankInteger(highRank))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method getRankClass(handRank:) \
-                received a hand rank integer representation \
-                of \(highRank) rather than a value between 0 and 7462.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).description
-                    == (error as! SwiftTreysError).debugDescription)
-        }
+    for rank in invalidRanks {
+      XCTAssertThrowsError(try Card(rankChar: rank, suitChar: "c")) { error in
+        guard let error = error as? ParseCardError,
+              case let .invalidRank(originalInput: i, incorrectChar: r) = error else { return XCTFail() }
+        XCTAssertEqual(rank, r)
+        XCTAssertEqual(
+          error.description,
+          """
+          Error parsing input '\(i)' as a Card: Invalid \
+          rank character '\(r)', expected one of [23456789TJQKA]
+          """
+        )
+      }
     }
 
-    func testThrowsInvalidHandClassInteger() throws {
-        do {
-            // Too low of a rank
-            let lowRank = 0
-            XCTAssertThrowsError(try Evaluator.classRankToPokerHand(classRank: lowRank)) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidHandClassInteger(lowRank))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method classToString(classInt:) \
-                could not look up the hand class integer \
-                \(lowRank). Expected a value from 1 to 9.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
+    for suit in invalidSuits {
+      XCTAssertThrowsError(try Card(rankChar: "A", suitChar: suit)) { error in
+        guard let error = error as? ParseCardError,
+              case let .invalidSuit(originalInput: i, incorrectChar: s) = error else { return XCTFail() }
+        XCTAssertEqual(suit, s)
+        XCTAssertEqual(
+          error.description,
+          """
+          Error parsing input '\(i)' as a Card: Invalid \
+          suit character '\(s)', expected one of [chsd]
+          """
+        )
+      }
+    }
+  }
 
-        do {
-            // Too high of a rank
-            let highRank = 10
-            XCTAssertThrowsError(try Evaluator.classRankToPokerHand(classRank: highRank)) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidHandClassInteger(highRank))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method classToString(classInt:) \
-                could not look up the hand class integer \
-                \(highRank). Expected a value from 1 to 9.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
+  func testCardParseThrows() throws {
+    let threeCharInput = "abc"
+    let emptyInput = ""
+
+    XCTAssertThrowsError(try Card.parse(threeCharInput)) { error in
+      guard let error = error as? ParseCardError,
+            case let .invalidLength(originalInput: i) = error else { return XCTFail() }
+      XCTAssertEqual(i, threeCharInput)
+      XCTAssertEqual(
+        error.description,
+        """
+        Error parsing input '\(threeCharInput)' as a Card: Found \
+        input of length \(threeCharInput.count), expected 2
+        """
+      )
     }
 
-    func testThrowsInvalidPokerBoard() throws {
-        let hand = Card.fromStringList(["Td", "4h"])!
-        do {
-            // Too big of a board
-            let board = Card.fromStringList(["Ac", "As", "Ad", "Ah", "2c", "2s"])!
-            XCTAssertThrowsError(try Evaluator.handSummary(board: board, hands: [hand])) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidPokerBoard(incorrectCardCount: 6))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method \
-                handSummary(board:hands:) \
-                received a board comprised of \
-                6 cards, rather than 5 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
-
-        do {
-            // Too small of a board
-            let board = Card.fromStringList(["Ac", "As", "Ad", "Ah"])!
-            XCTAssertThrowsError(try Evaluator.handSummary(board: board, hands: [hand])) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidPokerBoard(incorrectCardCount: 4))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method \
-                handSummary(board:hands:) \
-                received a board comprised of \
-                4 cards, rather than 5 cards.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
+    XCTAssertThrowsError(try Card.parse(emptyInput)) { error in
+      guard let error = error as? ParseCardError,
+            case let .invalidLength(originalInput: i) = error else { return XCTFail() }
+      XCTAssertEqual(i, emptyInput)
+      XCTAssertEqual(
+        error.description,
+        """
+        Error parsing input '' as a Card: Found \
+        input of length 0, expected 2
+        """
+      )
     }
 
-    func testThrowsInvalidPokerHand() throws {
-        let board = Card.fromStringList(["Ac", "2d", "Qh", "Ad", "5s"])!
-        do {
-            // One hand too small
-            let hand1 = Card.fromStringList(["5c", "Td"])!
-            let hand2 = Card.fromStringList(["7h"])!
-            XCTAssertThrowsError(try Evaluator.handSummary(board: board, hands: [hand1, hand2])) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidPokerHand(incorrectCardCount: 1))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method \
-                handSummary(board:hands:) \
-                did not receive a list of valid \
-                poker hands comprised of 2 cards \
-                each. Got a hand with 1 card(s) \
-                instead.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
+    let invalidRank = "tc"
+    let invalidSuit = "5H"
 
-        do {
-            // One hand too large
-            let hand1 = Card.fromStringList(["5c", "Td"])!
-            let hand2 = Card.fromStringList(["7h", "8d", "4d"])!
-            XCTAssertThrowsError(try Evaluator.handSummary(board: board, hands: [hand1, hand2])) {
-                error = $0
-            }
-            XCTAssert(error is SwiftTreysError)
-            XCTAssert(error as? SwiftTreysError == .invalidPokerHand(incorrectCardCount: 3))
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription == """
-                Evaluator method \
-                handSummary(board:hands:) \
-                did not receive a list of valid \
-                poker hands comprised of 2 cards \
-                each. Got a hand with 3 card(s) \
-                instead.
-                """)
-            XCTAssert(
-                (error as! SwiftTreysError).debugDescription
-                    == (error as! SwiftTreysError).description)
-        }
+    XCTAssertThrowsError(try Card.parse(invalidRank)) { error in
+      guard let error = error as? ParseCardError,
+            case .invalidRank(originalInput: _, incorrectChar: _) = error else { return XCTFail() }
     }
+
+    XCTAssertThrowsError(try Card.parse(invalidSuit)) { error in
+      guard let error = error as? ParseCardError,
+            case .invalidSuit(originalInput: _, incorrectChar: _) = error else { return XCTFail() }
+    }
+  }
+
+  func testEvaluationDuplicateErrors() throws {
+    let oneDup = try Card.parseArray(strings: ["5c", "5c", "Ad", "3h", "7d"])
+    for hand in oneDup.permutations(ofCount: 5) {
+      assert(hand.count == 5)
+      XCTAssertThrowsError(try Evaluator.evaluate(cards: hand)) { error in
+        guard let error = error as? EvaluationError,
+              case let .cardsNotUnique(h) = error else { return XCTFail() }
+        XCTAssertEqual(hand, h)
+        XCTAssertEqual(
+          error.description,
+          """
+          Cannot evaluate a poker hand with a set of cards that \
+          are not unique. Cards duplicated at least once: \
+          5c
+          """
+        )
+      }
+    }
+
+    let oneTrip = try Card.parseArray(strings: ["5c", "5c", "5c", "3h", "7d"])
+    for hand in oneTrip.permutations(ofCount: 5) {
+      assert(hand.count == 5)
+      XCTAssertThrowsError(try Evaluator.evaluate(cards: hand)) { error in
+        guard let error = error as? EvaluationError,
+              case let .cardsNotUnique(h) = error else { return XCTFail() }
+        XCTAssertEqual(hand, h)
+        XCTAssertEqual(
+          error.description,
+          """
+          Cannot evaluate a poker hand with a set of cards that \
+          are not unique. Cards duplicated at least once: \
+          5c
+          """
+        )
+      }
+    }
+
+    let multiDup = try Card.parseArray(strings: ["5c", "5c", "3h", "3h", "7d"])
+    for hand in multiDup.permutations(ofCount: 5) {
+      assert(hand.count == 5)
+      XCTAssertThrowsError(try Evaluator.evaluate(cards: hand)) { error in
+        guard let error = error as? EvaluationError,
+              case let .cardsNotUnique(h) = error else { return XCTFail() }
+        XCTAssertEqual(hand, h)
+        XCTAssert(error.description.contains("5c") && error.description.contains("3h"))
+      }
+    }
+  }
+
+  func testEvaluationInvalidCountErrors() {
+    let deck = Card.generateDeck()
+    for i in 0 ..< 5 {
+      let cards = deck[0 ..< i]
+      assert(cards.count == i && i < 5)
+      XCTAssertThrowsError(try Evaluator.evaluate(cards: cards)) { error in
+        guard let error = error as? EvaluationError,
+              case let .invalidHandSize(size) = error else { return XCTFail() }
+        XCTAssertEqual(i, size)
+        XCTAssertEqual(
+          error.description,
+          """
+          Cannot evaluate a poker hand with a set of less than 5 \
+          cards. Number of cards received: \(i)
+          """
+        )
+      }
+    }
+  }
 }

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# The configuration I used when formatting with `swiftformat`
+if command -v swiftformat &>/dev/null; then
+  BASEDIR=$(dirname "$0")
+  swiftformat \
+    --swiftversion 5.3 \
+    --indent 2 \
+    --extensionacl on-declarations \
+    "$BASEDIR"
+else
+  >&2 echo "swiftformat is not installed!"
+  exit 1
+fi

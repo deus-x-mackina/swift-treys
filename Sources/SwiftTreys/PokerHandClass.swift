@@ -1,31 +1,31 @@
-/// An enumeration type representing every possible classification
-/// for a poker hand, such as flush, two pair, straight, etc.
-public enum PokerHandClass: String, CaseIterable {
-    case highCard = "High Card"
-    case pair = "Pair"
-    case twoPair = "Two Pair"
-    case threeOfAKind = "Three of a Kind"
-    case straight = "Straight"
-    case flush = "Flush"
-    case fullHouse = "Full House"
-    case fourOfAKind = "Four of a Kind"
-    case straightFlush = "Straight Flush"
+/// The various classifications of poker hands.
+public enum PokerHandClass {
+  /// A high card hand.
+  case highCard(highRank: Rank)
 
-    private static var ranks = LookupTable.RANK_CLASS_TO_POKER_HAND.swappingKeysAndValues()!
+  /// A pair.
+  case pair(pair: Rank)
+
+  /// Two pair.
+  case twoPair(highPair: Rank, lowPair: Rank)
+
+  /// Three of a kind.
+  case threeOfAKind(trips: Rank)
+
+  /// A straight.
+  case straight(highRank: Rank)
+
+  /// A flush.
+  case flush(highRank: Rank)
+
+  /// A full house.
+  case fullHouse(trips: Rank, pair: Rank)
+
+  /// Four of a kind.
+  case fourOfAKind(quads: Rank)
+
+  /// A straight flush (includes royal flushes).
+  case straightFlush(highRank: Rank)
 }
 
-extension PokerHandClass: Hashable {}
-
-extension PokerHandClass: Codable {}
-
-extension PokerHandClass: CustomStringConvertible {
-    public var description: String {
-        rawValue
-    }
-}
-
-extension PokerHandClass: Comparable {
-    public static func < (lhs: PokerHandClass, rhs: PokerHandClass) -> Bool {
-        PokerHandClass.ranks[lhs]! > PokerHandClass.ranks[rhs]!
-    }
-}
+extension PokerHandClass: Equatable {}
